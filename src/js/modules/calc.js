@@ -1,4 +1,4 @@
-const calc = (size, material, options, promocode, result, state) => {
+/* const calc = (size, material, options, promocode, result, state) => {
     const sizeBlock = document.querySelector(size),
           materialBlock = document.querySelector(material),
           optionsBlock = document.querySelector(options),
@@ -45,7 +45,57 @@ const calc = (size, material, options, promocode, result, state) => {
     bindAction('change', sizeBlock, 'size');
     bindAction('change', materialBlock, 'material');
     bindAction('change', optionsBlock, 'option');
-    /* bindAction('input', promocodeBlock, 'promcode'); */
+    bindAction('input', promocodeBlock, 'promcode');
+};
+
+export default calc; */
+
+//Другой способ
+
+const calc = (size, material, options, promocode, result, state) => {
+    const sizeBlock = document.querySelector(size),
+          materialBlock = document.querySelector(material),
+          optionsBlock = document.querySelector(options),
+          promocodeBlock = document.querySelector(promocode),
+          resultBlock = document.querySelector(result);
+
+    let sum = 0;
+    const calcFunc = () => {
+        sum = Math.round((+sizeBlock.value) * (+materialBlock.value) + (+optionsBlock.value));
+        state.promcode = promocodeBlock.value;
+        if (sizeBlock.value == '' || materialBlock.value == '') {
+            resultBlock.textContent = "Пожалуйста, выберите размер и материал картины";
+        } else if (promocodeBlock.value === 'IWANTPOPART') {
+            resultBlock.textContent = Math.round(sum * 0.7);
+        } else {
+            resultBlock.textContent = sum;
+            state.total = sum;
+            state.promcode = promocodeBlock.value;
+        }
+    };
+
+    function bindAction (event, elem, property) {
+        
+        
+        elem.addEventListener(event, () => {
+            if(event === 'change') {
+                state[property] = elem.options[elem.selectedIndex].text;
+            } /* else {
+                state[property] = elem.value;
+            } */
+            console.log(state);
+        });
+    }
+
+    sizeBlock.addEventListener('change', calcFunc);
+    materialBlock.addEventListener('change', calcFunc);
+    optionsBlock.addEventListener('change', calcFunc);
+    promocodeBlock.addEventListener('input', calcFunc);
+
+    bindAction('change', sizeBlock, 'size');
+    bindAction('change', materialBlock, 'material');
+    bindAction('change', optionsBlock, 'option');
+    bindAction('input', promocodeBlock, 'promcode');
 };
 
 export default calc;
