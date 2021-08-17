@@ -51,6 +51,7 @@
 export default calc; */
 
 //Другой способ
+import {getResourse} from "../services/requests";
 
 const calc = (size, material, options, promocode, result, state) => {
     const sizeBlock = document.querySelector(size),
@@ -80,10 +81,31 @@ const calc = (size, material, options, promocode, result, state) => {
         elem.addEventListener(event, () => {
             if(event === 'change') {
                 state[property] = elem.options[elem.selectedIndex].text;
-            } /* else {
-                state[property] = elem.value;
-            } */
+            }
             console.log(state);
+        });
+    }
+
+    getResourse('assets/db.json')
+        .then(res => {
+            createCalcForm(res.size, size);
+            createCalcForm(res.material, material);
+            createCalcForm(res.options, options);
+        })
+        .catch(error => console.log(error));
+
+    function createCalcForm(response, nameBlock) {
+        response.forEach(item => {
+            let block = document.querySelector(nameBlock);
+            let calcForm = document.createElement('option');
+            Object.keys(item).forEach(key => {
+                if (key === "value" || key === "title") {
+                    calcForm.setAttribute( key, item[key]);
+                } else {
+                    calcForm.innerHTML = item[key];
+                }
+            });
+            block.appendChild(calcForm);
         });
     }
 
@@ -95,7 +117,6 @@ const calc = (size, material, options, promocode, result, state) => {
     bindAction('change', sizeBlock, 'size');
     bindAction('change', materialBlock, 'material');
     bindAction('change', optionsBlock, 'option');
-    bindAction('input', promocodeBlock, 'promcode');
 };
 
 export default calc;

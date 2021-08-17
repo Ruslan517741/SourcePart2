@@ -4,10 +4,12 @@ import {postData} from "../services/requests";
 const forms = (state) => {
     const form = document.querySelectorAll('form'),
           inputs = document.querySelectorAll('input'),
-          upload = document.querySelectorAll('[name="upload"]');
+          upload = document.querySelectorAll('[name="upload"]'),
+          selects = document.querySelectorAll('#size, #material, #options'),
+          resultBlock = document.querySelector('.calc-price');
 
     /* checkNamInputs('input[name="user_phone"]'); */
-
+    console.log(selects);
     const message = {
         loading: 'Загрузка...',
         success: 'Спасибо! Скоро мы с вами свяжемся',
@@ -31,6 +33,10 @@ const forms = (state) => {
         upload.forEach(item => {
             item.previousElementSibling.textContent = 'Файл не выбран';
         });
+        selects.forEach(item => {
+            item.options[0].selected = true;
+            resultBlock.textContent = "Для расчета нужно выбрать размер картины и материал картины";
+        });
     };
 
     upload.forEach(item => {
@@ -46,10 +52,13 @@ const forms = (state) => {
 
     form.forEach(item => {
         item.addEventListener('submit', (e) => {
-            for (var member in state) {
-                delete state[member];
-                console.log('del');
+            if (item.getAttribute('name') !== "calc-form") {
+                for (var member in state) {
+                    delete state[member];
+                    console.log('del');
+                }
             }
+            
             
             e.preventDefault();
 
@@ -79,7 +88,14 @@ const forms = (state) => {
 
             for (let key in state) {
                 formData.append(key, state[key]);
+                console.log(1);
             }
+            /* if (item.getAttribute('name') === "calc-form") {
+                for (var key in state) {
+                    delete state[key];
+                    console.log('key');
+                }
+            } */
 
             postData(api, formData)
                 .then(res => {
