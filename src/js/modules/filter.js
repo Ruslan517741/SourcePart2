@@ -1,21 +1,8 @@
-import { once } from "gulp";
-
 const filter = () => {
     const menu = document.querySelector('.portfolio-menu'),
           items = menu.querySelectorAll('li'),
-          btnAll = menu.querySelector('.all'),
-          btnLovers = menu.querySelector('.lovers'),
-          btnChef = menu.querySelector('.chef'),
-          btnGirl = menu.querySelector('.girl'),
-          btnGuy = menu.querySelector('.guy'),
-          btnGrandmother = menu.querySelector('.grandmother'),
-          btnGranddad = menu.querySelector('.granddad'),
           wrapper = document.querySelector('.portfolio-wrapper'),
           markAll = wrapper.querySelectorAll('.all'),
-          markGirl = wrapper.querySelectorAll('.girl'),
-          markLovers = wrapper.querySelectorAll('.lovers'),
-          markChef = wrapper.querySelectorAll('.chef'),
-          markGuy = wrapper.querySelectorAll('.guy'),
           no = document.querySelector('.portfolio-no');
 
     const typeFilter = (markType) => {
@@ -23,7 +10,6 @@ const filter = () => {
             mark.style.display = 'none';
             mark.classList.remove('animated', 'fadeIn');
         });
-
         no.style.display = "none";
         no.classList.remove('animated', 'fadeIn');
 
@@ -38,45 +24,19 @@ const filter = () => {
         }
     };
 
-    function selectFicter() {
-        items.forEach(item => {
-            item.addEventListener('click', () => {
-                
-                typeFilter(wrapper.querySelectorAll(`.${item.classList}`));
-                console.log(wrapper.querySelectorAll(`.${item.classList}`));
-                
-            });
+    items.forEach(item => {
+        item.addEventListener('click', () => {
+            let nameClass = `.${item.className}`;
+            if (nameClass.includes("active") == false) {
+                if (nameClass === ".grandmother" || nameClass === ".granddad") {
+                    typeFilter();
+                } else { 
+                    typeFilter(wrapper.querySelectorAll(nameClass));
+                }
+            }
         });
-    }
-    selectFicter();
-    /* btnAll.addEventListener('click', () => {
-        typeFilter(markAll);
     });
-
-    btnLovers.addEventListener('click', () => {
-        typeFilter(markLovers);
-    });
-
-    btnChef.addEventListener('click', () => {
-        typeFilter(markChef);
-    });
-
-    btnGuy.addEventListener('click', () => {
-        typeFilter(markGuy);
-    });
-
-    btnGirl.addEventListener('click', () => {
-        typeFilter(markGirl);
-    });
-
-    btnGrandmother.addEventListener('click', () => {
-        typeFilter();
-    });
-
-    btnGranddad.addEventListener('click', () => {
-        typeFilter();
-    }); */
-
+    
     menu.addEventListener('click', (e) => {
         let target = e.target;
 

@@ -9,7 +9,6 @@ const forms = (state) => {
           resultBlock = document.querySelector('.calc-price');
 
     /* checkNamInputs('input[name="user_phone"]'); */
-    console.log(selects);
     const message = {
         loading: 'Загрузка...',
         success: 'Спасибо! Скоро мы с вами свяжемся',

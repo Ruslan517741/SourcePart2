@@ -82,7 +82,7 @@ const calc = (size, material, options, promocode, result, state) => {
             if(event === 'change') {
                 state[property] = elem.options[elem.selectedIndex].text;
             }
-            console.log(state);
+            
         });
     }
 
