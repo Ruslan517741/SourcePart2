@@ -4,11 +4,13 @@ const gulp = require("gulp");
 const webpack = require("webpack-stream");
 const browsersync = require("browser-sync");
 
-const dist = "./dist/";
+const dist = "./dist/",
+      docs = "./docs/";
 
 gulp.task("copy-html", () => {
     return gulp.src("./src/index.html")
                 .pipe(gulp.dest(dist))
+                .pipe(gulp.dest(docs))
                 .pipe(browsersync.stream());
 });
 
@@ -41,12 +43,14 @@ gulp.task("build-js", () => {
                       }
                 }))
                 .pipe(gulp.dest(dist))
+                .pipe(gulp.dest(docs))
                 .on("end", browsersync.reload);
 });
 
 gulp.task("copy-assets", () => {
     return gulp.src("./src/assets/**/*.*")
                 .pipe(gulp.dest(dist + "/assets"))
+                .pipe(gulp.dest(docs + "/assets"))
                 .on("end", browsersync.reload);
 });
 
@@ -89,7 +93,8 @@ gulp.task("build-prod-js", () => {
                         ]
                       }
                 }))
-                .pipe(gulp.dest(dist));
+                .pipe(gulp.dest(dist))
+                .pipe(gulp.dest(docs));
 });
 
 gulp.task("default", gulp.parallel("watch", "build"));
